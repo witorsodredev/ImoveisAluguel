@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  app-frontend:
+    container_name: app-frontend
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    stdin_open: true
+    tty: true
+    restart: always
