@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Casa",
-    "description": "Teste",
+    "title": "teste 5",
+    "description": "teste",
     "price": 1500,
-    "location": "Centro",
+    "location": "centro",
     "bedrooms": 2,
-    "bathrooms": 2,
-    "area": 43,
-    "type": "Casa",
+    "bathrooms": 1,
+    "area": 42,
+    "type": "Apartamento",
     "images": [
-      "http://localhost:5000/uploads/1764948847275-187359413683712.jpg"
+      "http://localhost:5000/uploads/1764968788000-187359413683712.jpg"
     ],
     "amenities": [
-      "Centro"
+      "Garagem"
     ],
     "contact": {
-      "name": "Casa teste",
-      "phone": "21966718763",
-      "email": "witor_sodre@lestetelecom.com.br"
+      "name": "witor",
+      "phone": "21966718739",
+      "email": "witor-cardoso@hotmail.com"
     },
     "available": true,
-    "createdAt": "2025-12-05T15:35:00.212Z"
+    "createdAt": "2025-12-05T21:07:10.415Z"
   }
 ]

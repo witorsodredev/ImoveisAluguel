@@ -1,3 +1,24 @@
+
+/**
+ * Import jsonwebtoken para autenticaçào na pagina principal administrativa
+ */
+
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "Teste";
+// Middleware simples para verificar token
+function verifyToken(req, res, next) {
+  const token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res.status(401).json({ error: "Token ausente" });
+  }
+
+  if (token !== ACCESS_TOKEN) {
+    return res.status(403).json({ error: "Token inválido" });
+  }
+
+  next();
+}
+
 /**
  * server.js - VERSÃO COMPLETA COM PERSISTÊNCIA
  * 
@@ -141,7 +162,7 @@ app.get('/api/properties', (req, res) => {
  * 4. Salva no arquivo
  * 5. Retorna imóvel criado
  */
-app.post('/api/properties', (req, res) => {
+app.post('/api/properties', verifyToken, (req, res) => {
   try {
     /**
      * Valida dados obrigatórios
@@ -211,7 +232,7 @@ app.post('/api/properties', (req, res) => {
  * 
  * Remove imóvel e suas imagens
  */
-app.delete('/api/properties/:id', (req, res) => {
+app.delete('/api/properties/:id', verifyToken, (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -269,7 +290,7 @@ app.delete('/api/properties/:id', (req, res) => {
 });
 
 // Rotas de upload (mantém as anteriores)
-app.post('/api/upload', upload.array('images', 5), (req, res) => {
+app.post('/api/upload', verifyToken, upload.array('images', 5), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ 
       error: 'Nenhuma imagem foi enviada' 
@@ -310,7 +331,7 @@ app.delete('/api/upload/:filename', (req, res) => {
   }
 });
 
-app.get('/api/health', (req, res) => {
+app.get('/api/health', verifyToken, (req, res) => {
   res.json({ 
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -348,16 +369,111 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+// API PARA ACESSO ADMINISTRATIVO DA PAGINA DASHBOARD
+app.post("/api/token-login", (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: "Token não informado" });
+  }
+
+  if (token !== ACCESS_TOKEN) {
+    return res.status(401).json({ error: "Token inválido" });
+  }
+
+  return res.json({
+    ok: true,
+    name: "Administrador",
+    token: ACCESS_TOKEN
+  });
+});
+
+
+
+// TESTE EDIT ////////////////////////////////////////////////////////////////////
+
+
+// Rota GET para buscar um imóvel específico por ID
+app.get('/api/properties/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`Buscando imóvel com ID: ${id}`);
+
+  try {
+    // Ler o arquivo JSON atual (que é um array diretamente)
+    const properties = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+
+    // Encontrar o imóvel pelo ID
+    const property = properties.find(p => p.id === parseInt(id));
+
+    if (!property) {
+      console.log(`Imóvel com ID ${id} não encontrado`);
+      return res.status(404).json({ error: 'Imóvel não encontrado' });
+    }
+
+    console.log(`Imóvel encontrado: ${property.title}`);
+    res.json(property);
+
+  } catch (error) {
+    console.error('Erro ao buscar imóvel:', error);
+    res.status(500).json({ error: 'Erro ao buscar imóvel' });
+  }
+});
+
+
+// Rota PUT para atualizar um imóvel existente
+app.put('/api/properties/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(`Atualizando imóvel com ID: ${id}`);
+  const updatedProperty = req.body;
+
+  try {
+    // Ler o arquivo JSON atual (array)
+    const properties = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+
+    // Encontrar o índice do imóvel a ser atualizado
+    const index = properties.findIndex(p => p.id === parseInt(id));
+
+    if (index === -1) {
+      return res.status(404).json({ error: 'Imóvel não encontrado' });
+    }
+
+    // Preservar o ID original e atualizar os outros campos
+    const property = {
+      ...properties[index],
+      ...updatedProperty,
+      id: parseInt(id) // Garantir que o ID não mude
+    };
+
+    // Atualizar o imóvel no array
+    properties[index] = property;
+
+    // Salvar o arquivo JSON atualizado
+    fs.writeFileSync(DATA_FILE, JSON.stringify(properties, null, 2));
+
+    res.json({ 
+      message: 'Imóvel atualizado com sucesso',
+      property 
+    });
+
+  } catch (error) {
+    console.error('Erro ao atualizar imóvel:', error);
+    res.status(500).json({ error: 'Erro ao atualizar imóvel' });
+  }
+});
+
+
+
 // Inicialização
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════╗
 ║   Servidor Backend Iniciado!           ║
 ╠════════════════════════════════════════╣
-║   Porta: ${PORT}                       ║
-║   URL: http://localhost:${PORT}        ║
-║   Uploads: ${uploadDir}                ║
-║   Dados: ${DATA_FILE}                  ║
+║   Porta: ${PORT}                       ╣
+║   URL: http://localhost:${PORT}        ╣
+║   Uploads: ${uploadDir}                ╣
+║   Dados: ${DATA_FILE}                  ╣
 ╚════════════════════════════════════════╝
   `);
 });
