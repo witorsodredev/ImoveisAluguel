@@ -264,75 +264,75 @@ const PropertyForm = ({ onSubmit }) => {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (uploadedImages.length === 0) {
-    alert('Adicione pelo menos uma imagem do imóvel');
-    return;
-  }
+    if (uploadedImages.length === 0) {
+      alert('Adicione pelo menos uma imagem do imóvel');
+      return;
+    }
 
-  /**
-   * Cria objeto do imóvel
-   * 
-   * NÃO inclui o ID - será gerado pelo backend
-   */
-  const newProperty = {
-    title: formData.title,
-    description: formData.description,
-    price: parseFloat(formData.price),
-    location: formData.location,
-    bedrooms: parseInt(formData.bedrooms),
-    bathrooms: parseInt(formData.bathrooms),
-    area: parseFloat(formData.area),
-    type: formData.type,
-    images: uploadedImages, // URLs do servidor
-    amenities: formData.amenities.split(',').map(a => a.trim()).filter(a => a),
-    contact: {
-      name: formData.contactName,
-      phone: formData.contactPhone,
-      email: formData.contactEmail
+    /**
+     * Cria objeto do imóvel
+     * 
+     * NÃO inclui o ID - será gerado pelo backend
+     */
+    const newProperty = {
+      title: formData.title,
+      description: formData.description,
+      price: parseFloat(formData.price),
+      location: formData.location,
+      bedrooms: parseInt(formData.bedrooms),
+      bathrooms: parseInt(formData.bathrooms),
+      area: parseFloat(formData.area),
+      type: formData.type,
+      images: uploadedImages, // URLs do servidor
+      amenities: formData.amenities.split(',').map(a => a.trim()).filter(a => a),
+      contact: {
+        name: formData.contactName,
+        phone: formData.contactPhone,
+        email: formData.contactEmail
+      }
+    };
+
+    try {
+      /**
+       * Envia para API do backend
+       * 
+       * POST /api/properties
+       * - Salva no arquivo JSON
+       * - Retorna imóvel criado com ID
+       */
+      const response = await fetch(`${API_URL}/api/properties`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newProperty)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erro ao cadastrar imóvel');
+      }
+
+      const data = await response.json();
+
+      /**
+       * Chama callback do componente pai (se existir)
+       */
+      if (onSubmit) {
+        onSubmit(data.property);
+      }
+
+      alert('Imóvel publicado com sucesso!');
+      navigate('/');
+
+    } catch (error) {
+      console.error('Erro ao cadastrar imóvel:', error);
+      alert(`Erro ao publicar imóvel: ${error.message}`);
     }
   };
-
-  try {
-    /**
-     * Envia para API do backend
-     * 
-     * POST /api/properties
-     * - Salva no arquivo JSON
-     * - Retorna imóvel criado com ID
-     */
-    const response = await fetch(`${API_URL}/api/properties`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newProperty)
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Erro ao cadastrar imóvel');
-    }
-
-    const data = await response.json();
-
-    /**
-     * Chama callback do componente pai (se existir)
-     */
-    if (onSubmit) {
-      onSubmit(data.property);
-    }
-
-    alert('Imóvel publicado com sucesso!');
-    navigate('/');
-
-  } catch (error) {
-    console.error('Erro ao cadastrar imóvel:', error);
-    alert(`Erro ao publicar imóvel: ${error.message}`);
-  }
-};
 
   return (
     <div style={styles.container}>
@@ -350,15 +350,71 @@ const handleSubmit = async (e) => {
           <p style={styles.helperText}>
             Adicione de 1 a 5 imagens (máximo 5MB cada). As imagens serão armazenadas no servidor.
           </p>
+          {/**
+         * Grid de imagens enviadas
+         */}
+          {uploadedImages.length > 0 && (
+            <div style={styles.previewGrid}>
+              {uploadedImages.map((imageUrl, index) => (
+                <div key={index} style={styles.previewItem}>
+                  {/**
+                 * Imagem do servidor
+                 * 
+                 * src={imageUrl}:
+                 * - URL completa do servidor
+                 * - Exemplo: http://localhost:5000/uploads/1234-foto.jpg
+                 */}
+                  <img
+                    src={imageUrl}
+                    alt={`Imagem ${index + 1}`}
+                    style={styles.previewImage}
+                  />
+
+                  {/**
+                 * Botão de remover
+                 * 
+                 * onClick: Remove do servidor E do estado
+                 */}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index, imageUrl)}
+                    style={styles.removeButton}
+                    title="Remover imagem"
+                  >
+                    <X size={16} />
+                  </button>
+
+                  <div style={styles.imageBadge}>
+                    {index === 0 ? 'Principal' : `${index + 1}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/**
-           * Botão de upload
-           * 
-           * Desabilitado durante upload ou se já tem 5 imagens
-           */}
+         * Estado vazio
+         */}
+          {uploadedImages.length === 0 && !uploading && (
+            <div style={styles.emptyState}>
+              <ImageIcon size={48} style={{ color: '#9ca3af' }} />
+              <p style={styles.emptyText}>
+                Nenhuma imagem adicionada ainda
+              </p>
+              <p style={styles.emptySubtext}>
+                A primeira imagem será a principal do anúncio
+              </p>
+            </div>
+          )}
+
+          {/**
+         * Botão de upload
+         * 
+         * Desabilitado durante upload ou se já tem 5 imagens
+         */}
           <div style={styles.uploadArea}>
-            <label 
-              htmlFor="imageUpload" 
+            <label
+              htmlFor="imageUpload"
               style={{
                 ...styles.uploadLabel,
                 ...(uploading || uploadedImages.length >= 5 ? styles.uploadLabelDisabled : {})
@@ -393,7 +449,7 @@ const handleSubmit = async (e) => {
            */}
           {uploading && (
             <div style={styles.progressBar}>
-              <div 
+              <div
                 style={{
                   ...styles.progressFill,
                   width: `${uploadProgress}%`
@@ -402,62 +458,6 @@ const handleSubmit = async (e) => {
             </div>
           )}
 
-          {/**
-           * Grid de imagens enviadas
-           */}
-          {uploadedImages.length > 0 && (
-            <div style={styles.previewGrid}>
-              {uploadedImages.map((imageUrl, index) => (
-                <div key={index} style={styles.previewItem}>
-                  {/**
-                   * Imagem do servidor
-                   * 
-                   * src={imageUrl}:
-                   * - URL completa do servidor
-                   * - Exemplo: http://localhost:5000/uploads/1234-foto.jpg
-                   */}
-                  <img 
-                    src={imageUrl} 
-                    alt={`Imagem ${index + 1}`}
-                    style={styles.previewImage}
-                  />
-
-                  {/**
-                   * Botão de remover
-                   * 
-                   * onClick: Remove do servidor E do estado
-                   */}
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index, imageUrl)}
-                    style={styles.removeButton}
-                    title="Remover imagem"
-                  >
-                    <X size={16} />
-                  </button>
-
-                  <div style={styles.imageBadge}>
-                    {index === 0 ? 'Principal' : `${index + 1}`}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/**
-           * Estado vazio
-           */}
-          {uploadedImages.length === 0 && !uploading && (
-            <div style={styles.emptyState}>
-              <ImageIcon size={48} style={{ color: '#9ca3af' }} />
-              <p style={styles.emptyText}>
-                Nenhuma imagem adicionada ainda
-              </p>
-              <p style={styles.emptySubtext}>
-                A primeira imagem será a principal do anúncio
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Resto do formulário (igual ao anterior) */}

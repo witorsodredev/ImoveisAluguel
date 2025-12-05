@@ -5,6 +5,8 @@ import PropertyList from './components/PropertyList';
 import PropertyDetail from './components/PropertyDetail';
 import PropertyForm from './components/PropertyForm';
 import './App.css';
+import Dashboard from './components/Dashboard';
+import EditProperty from './components/EditProperty';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -179,6 +181,11 @@ function App() {
               path="/publicar" 
               element={<PropertyForm onSubmit={handleAddProperty} />} 
             />
+            <Route
+              path='/dashboard'
+              element={<Dashboard />} />
+            <Route
+              path='/edit/:id' element={<EditProperty/>} />
           </Routes>
         </main>
         <footer style={{ 
