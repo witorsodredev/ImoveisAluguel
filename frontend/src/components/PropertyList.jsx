@@ -45,7 +45,7 @@ const PropertyList = ({ properties, onDelete }) => {
 
           <div style={styles.priceFilter}>
             <label style={styles.label}>
-              Até R¨D {maxPrice.toLocaleString('pt-BR')}
+              Até {maxPrice.toLocaleString('pt-BR')}
             </label>
             <input
               type="range"

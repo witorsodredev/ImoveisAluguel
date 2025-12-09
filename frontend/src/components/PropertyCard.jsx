@@ -43,7 +43,7 @@ const PropertyCard = ({ property }) => {
 
         <div style={styles.footer}>
           <div style={styles.price}>
-            R¨D {property.price.toLocaleString('pt-BR')}/mês
+             {property.price.toLocaleString('pt-BR')}/mês
           </div>
           <Link to={`/imovel/${property.id}`} style={styles.button}>
             Ver Detalhes

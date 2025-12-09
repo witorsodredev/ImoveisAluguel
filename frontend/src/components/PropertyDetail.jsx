@@ -62,7 +62,7 @@ const PropertyDetail = ({ properties }) => {
               </div>
             </div>
             <div style={styles.price}>
-              R¨D {property.price.toLocaleString('pt-BR')}<span style={styles.period}>/mês</span>
+               {property.price.toLocaleString('pt-BR')}<span style={styles.period}>/mês</span>
             </div>
           </div>
 
