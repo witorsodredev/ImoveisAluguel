@@ -1,0 +1,227 @@
+.property-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Botão Voltar */
+.property-detail-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2563eb;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+/* GALERIA */
+.property-detail-gallery {
+  position: relative;
+  height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.property-detail-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: white;
+  padding: 1.5rem;
+}
+
+/* Botão Lateral */
+.property-detail-gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Indicador de imagem */
+.property-detail-gallery-indicator {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: rgba(0,0,0,0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.property-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+
+.propertydetail-main-info {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Cabeçalho principal */
+.property-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.property-detail-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.property-detail-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+}
+
+/* Preço */
+.property-detail-price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.property-detail-period {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* FEATURES */
+.property-detail-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.property-detail-feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #2563eb;
+}
+
+.property-detail-feature-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.property-detail-feature-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* SEÇÕES */
+.property-detail-section {
+  margin-bottom: 2rem;
+}
+
+.property-detail-section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.property-detail-description {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.property-detail-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.property--detail-amenity {
+  background-color: #eff6ff;
+  color: #2563eb;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* CONTATO */
+.property-detail-contact-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.property-detail-contact-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.property-detail-contact-info {
+  margin-bottom: 1.5rem;
+}
+
+.property-detail-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+}
+
+.property-detail-contact-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.property-detail-contact-button {
+  width: 100%;
+  background-color: #2563eb;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.property-detail-contact-button:hover {
+  background-color: #1e40af;
+}
+
+/* NOT FOUND */
+.property-detail-not-found {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.5rem;
+  color: #6b7280;
+}

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon, Loader } from 'lucide-react';
+import "../styles/PropertyForm.css";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const EditProperty = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Pega o ID da URL
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState("");
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -27,24 +30,24 @@ const EditProperty = () => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [accessToken, setAccessToken] = useState('');
 
-  // Verifica autenticação ao montar o componente
+  /* --------------------------------------------------
+     Autenticação
+  ----------------------------------------------------- */
   useEffect(() => {
-    const savedToken = localStorage.getItem("accessToken");
-    if (savedToken) {
-      setAccessToken(savedToken);
-    } else {
-      const token = prompt("Digite o token de acesso:");
-      if (!token) {
-        navigate('/dashboard');
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      const t = prompt("Digite seu token de acesso:");
+      if (!t) {
+        navigate("/dashboard");
         return;
       }
-      localStorage.setItem("accessToken", token);
+      localStorage.setItem("accessToken", t);
+      setAccessToken(t);
+    } else {
       setAccessToken(token);
     }
 
-    // Verifica se o usuário está autenticado
     const authUser = localStorage.getItem("authUser");
     if (!authUser) {
       navigate("/");
@@ -52,155 +55,126 @@ const EditProperty = () => {
     }
   }, [navigate]);
 
-  // Carrega os dados do imóvel ao montar o componente
+  /* --------------------------------------------------
+     Carregar imóvel
+  ----------------------------------------------------- */
   useEffect(() => {
-    if (accessToken) {
-      fetchProperty();
-    }
-  }, [id, accessToken]);
+    if (!accessToken) return;
 
-  const fetchProperty = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/properties/${id}`);
-      if (!res.ok) {
-        throw new Error('Imóvel não encontrado');
+    const load = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/properties/${id}`);
+        if (!res.ok) throw new Error("Imóvel não encontrado");
+
+        const property = await res.json();
+
+        setFormData({
+          title: property.title,
+          description: property.description,
+          price: property.price,
+          location: property.location,
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          area: property.area,
+          type: property.type,
+          amenities: property.amenities.join(', '),
+          contactName: property.contact?.name,
+          contactPhone: property.contact?.phone,
+          contactEmail: property.contact?.email
+        });
+
+        setUploadedImages(property.images || []);
+
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao carregar imóvel");
+        navigate("/dashboard");
+      } finally {
+        setLoading(false);
       }
-      const property = await res.json();
+    };
 
-      // Preenche o formulário com os dados existentes
-      setFormData({
-        title: property.title || '',
-        description: property.description || '',
-        price: property.price || '',
-        location: property.location || '',
-        bedrooms: property.bedrooms || '',
-        bathrooms: property.bathrooms || '',
-        area: property.area || '',
-        type: property.type || 'Apartamento',
-        amenities: property.amenities ? property.amenities.join(', ') : '',
-        contactName: property.contact?.name || '',
-        contactPhone: property.contact?.phone || '',
-        contactEmail: property.contact?.email || ''
-      });
+    load();
+  }, [accessToken, id, navigate]);
 
-      // Carrega as imagens existentes
-      setUploadedImages(property.images || []);
-
-    } catch (error) {
-      console.error('Erro ao carregar imóvel:', error);
-      alert('Erro ao carregar dados do imóvel');
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (e) => {
+  /* --------------------------------------------------
+     Inputs
+  ----------------------------------------------------- */
+  const handleChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  /* --------------------------------------------------
+     Upload
+  ----------------------------------------------------- */
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
 
     if (uploadedImages.length + files.length > 5) {
-      alert('Máximo de 5 imagens permitidas');
-      e.target.value = '';
+      alert("Máximo de 5 imagens");
+      e.target.value = "";
       return;
     }
 
-    const validFiles = [];
-    for (const file of files) {
-      if (!file.type.startsWith('image/')) {
-        alert(`${file.name} não é uma imagem válida`);
-        continue;
-      }
+    const validFiles = files.filter(f =>
+      f.type.startsWith("image/") && f.size <= 5 * 1024 * 1024
+    );
 
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert(`${file.name} é muito grande. Máximo 5MB`);
-        continue;
-      }
-
-      validFiles.push(file);
-    }
-
-    if (validFiles.length === 0) {
-      e.target.value = '';
-      return;
-    }
+    if (!validFiles.length) return;
 
     setUploading(true);
     setUploadProgress(0);
 
     try {
-      const formData = new FormData();
-      validFiles.forEach(file => {
-        formData.append('images', file);
+      const form = new FormData();
+      validFiles.forEach(f => form.append("images", f));
+      form.append("accessToken", accessToken);
+
+      const res = await fetch(`${API_URL}/api/upload`, {
+        method: "POST",
+        body: form
       });
 
-      // Adiciona o token de acesso
-      formData.append('accessToken', accessToken);
+      if (!res.ok) throw new Error("Erro no upload");
 
-      const response = await fetch(`${API_URL}/api/upload`, {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erro ao fazer upload');
-      }
-
-      const data = await response.json();
+      const data = await res.json();
       setUploadedImages(prev => [...prev, ...data.images]);
+
       setUploadProgress(100);
 
-    } catch (error) {
-      console.error('Erro no upload:', error);
-      alert(`Erro ao fazer upload: ${error.message}`);
+    } catch (err) {
+      alert("Erro ao enviar imagens");
     } finally {
       setUploading(false);
       setUploadProgress(0);
-      e.target.value = '';
+      e.target.value = "";
     }
   };
 
-  const removeImage = async (index, imageUrl) => {
-    const filename = imageUrl.split('/').pop();
+  const removeImage = async (index, url) => {
+    const name = url.split('/').pop();
 
     try {
-      const response = await fetch(`${API_URL}/api/upload/${filename}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        }
+      await fetch(`${API_URL}/api/upload/${name}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` }
       });
 
-      if (!response.ok) {
-        throw new Error('Erro ao remover imagem do servidor');
-      }
-
       setUploadedImages(prev => prev.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error('Erro ao remover imagem:', error);
-      alert('Erro ao remover imagem. Tente novamente.');
+
+    } catch (err) {
+      alert("Erro ao remover imagem");
     }
   };
 
+  /* --------------------------------------------------
+     Submit
+  ----------------------------------------------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (uploadedImages.length === 0) {
-      alert('Adicione pelo menos uma imagem do imóvel');
-      return;
-    }
-
-    const updatedProperty = {
+    const updated = {
       title: formData.title,
       description: formData.description,
       price: parseFloat(formData.price),
@@ -210,7 +184,7 @@ const EditProperty = () => {
       area: parseFloat(formData.area),
       type: formData.type,
       images: uploadedImages,
-      amenities: formData.amenities.split(',').map(a => a.trim()).filter(a => a),
+      amenities: formData.amenities.split(',').map(a => a.trim()),
       contact: {
         name: formData.contactName,
         phone: formData.contactPhone,
@@ -219,178 +193,174 @@ const EditProperty = () => {
     };
 
     try {
-      // Envia o token de acesso no cabeçalho
-      const response = await fetch(`${API_URL}/api/properties/${id}`, {
-        method: 'PUT',
+      const res = await fetch(`${API_URL}/api/properties/${id}`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
         },
-        body: JSON.stringify(updatedProperty)
+        body: JSON.stringify(updated)
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-
-        if (response.status === 401) {
+      if (!res.ok) {
+        if (res.status === 401) {
+          alert("Token inválido");
           localStorage.removeItem("accessToken");
-          alert("Token de acesso inválido. Por favor, faça login novamente.");
-          navigate('/dashboard');
+          navigate("/dashboard");
           return;
         }
-
-        throw new Error(error.error || 'Erro ao atualizar imóvel');
+        throw new Error("Erro ao atualizar");
       }
 
-      alert('Imóvel atualizado com sucesso!');
-      navigate('/dashboard');
+      alert("Imóvel atualizado!");
+      navigate("/dashboard");
 
-    } catch (error) {
-      console.error('Erro ao atualizar imóvel:', error);
-      alert(`Erro ao atualizar imóvel: ${error.message}`);
+    } catch (err) {
+      alert(err.message);
     }
   };
 
+  /* --------------------------------------------------
+     Loading
+  ----------------------------------------------------- */
   if (loading) {
     return (
-      <div style={styles.loadingBox}>
-        <div style={styles.loader}></div>
-        <p>Carregando dados do imóvel...</p>
+      <div className="propertyForm-loadingBox">
+        <div className="propertyForm-loader"></div>
+        <p>Carregando dados...</p>
       </div>
     );
   }
 
+  /* --------------------------------------------------
+     FORM HTML
+  ----------------------------------------------------- */
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Editar Imóvel</h1>
+    <div className="propertyForm-container">
+      <h1 className="propertyForm-title">Editar Imóvel</h1>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        {/* SEÇÃO DE IMAGENS */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Imagens do Imóvel *</h2>
-          <p style={styles.helperText}>
-            Adicione de 1 a 5 imagens (máximo 5MB cada). As imagens serão armazenadas no servidor.
+      <form className="propertyForm-form" onSubmit={handleSubmit}>
+
+        {/* ---------------- IMAGENS ---------------- */}
+        <div className="propertyForm-section">
+          <h2 className="propertyForm-sectionTitle">Imagens *</h2>
+          <p className="propertyForm-helperText">
+            Envie de 1 a 5 imagens.
           </p>
 
+          {/* Grid de imagens */}
           {uploadedImages.length > 0 && (
-            <div style={styles.previewGrid}>
-              {uploadedImages.map((imageUrl, index) => (
-                <div key={index} style={styles.previewItem}>
-                  <img
-                    src={imageUrl}
-                    alt={`Imagem ${index + 1}`}
-                    style={styles.previewImage}
-                  />
+            <div className="propertyForm-previewGrid">
+              {uploadedImages.map((url, i) => (
+                <div key={i} className="propertyForm-previewItem">
+                  <img src={url} className="propertyForm-previewImage" />
+
                   <button
                     type="button"
-                    onClick={() => removeImage(index, imageUrl)}
-                    style={styles.removeButton}
-                    title="Remover imagem"
+                    className="propertyForm-removeButton"
+                    onClick={() => removeImage(i, url)}
                   >
                     <X size={16} />
                   </button>
-                  <div style={styles.imageBadge}>
-                    {index === 0 ? 'Principal' : `${index + 1}`}
+
+                  <div className="propertyForm-imageBadge">
+                    {i === 0 ? "Principal" : i + 1}
                   </div>
                 </div>
               ))}
             </div>
           )}
 
+          {/* Estado vazio */}
           {uploadedImages.length === 0 && !uploading && (
-            <div style={styles.emptyState}>
-              <ImageIcon size={48} style={{ color: '#9ca3af' }} />
-              <p style={styles.emptyText}>
-                Nenhuma imagem adicionada ainda
-              </p>
-              <p style={styles.emptySubtext}>
-                A primeira imagem será a principal do anúncio
+            <div className="propertyForm-emptyState">
+              <ImageIcon size={48} color="#9ca3af" />
+              <p className="propertyForm-emptyText">Nenhuma imagem enviada</p>
+              <p className="propertyForm-emptySubtext">
+                A primeira será a principal
               </p>
             </div>
           )}
 
-          <div style={styles.uploadArea}>
+          {/* Upload */}
+          <div className="propertyForm-uploadArea">
             <label
               htmlFor="imageUpload"
-              style={{
-                ...styles.uploadLabel,
-                ...(uploading || uploadedImages.length >= 5 ? styles.uploadLabelDisabled : {})
-              }}
+              className={
+                uploading || uploadedImages.length >= 5
+                  ? "propertyForm-uploadLabel propertyForm-uploadLabelDisabled"
+                  : "propertyForm-uploadLabel"
+              }
             >
               {uploading ? (
                 <>
-                  <Loader size={24} style={{ animation: 'spin 1s linear infinite' }} />
-                  <span>Enviando...</span>
+                  <Loader className="spin" size={24} />
+                  Enviando...
                 </>
               ) : (
                 <>
                   <Upload size={24} />
-                  <span>Selecionar Imagens</span>
+                  Selecionar Imagens
                 </>
               )}
             </label>
+
             <input
               id="imageUpload"
               type="file"
-              accept="image/*"
               multiple
-              onChange={handleImageUpload}
+              accept="image/*"
               disabled={uploading || uploadedImages.length >= 5}
-              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
             />
           </div>
 
           {uploading && (
-            <div style={styles.progressBar}>
+            <div className="propertyForm-progressBar">
               <div
-                style={{
-                  ...styles.progressFill,
-                  width: `${uploadProgress}%`
-                }}
-              />
+                className="propertyForm-progressFill"
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
             </div>
           )}
         </div>
 
-        {/* INFORMAÇÕES BÁSICAS */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Informações Básicas</h2>
+        {/* ---------------- INFORMAÇÕES ---------------- */}
+        <div className="propertyForm-section">
+          <h2 className="propertyForm-sectionTitle">Informações</h2>
 
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Título do Anúncio *</label>
+          <div className="propertyForm-formGroup">
+            <label className="propertyForm-label">Título *</label>
             <input
-              type="text"
+              className="propertyForm-input"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              style={styles.input}
-              placeholder="Ex: Apartamento Moderno no Centro"
             />
           </div>
 
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Descrição *</label>
+          <div className="propertyForm-formGroup">
+            <label className="propertyForm-label">Descrição *</label>
             <textarea
+              className="propertyForm-textarea"
               name="description"
+              rows="4"
               value={formData.description}
               onChange={handleChange}
               required
-              rows="5"
-              style={styles.textarea}
-              placeholder="Descreva as características do imóvel..."
             />
           </div>
 
-          <div style={styles.row}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Tipo de Imóvel *</label>
+          <div className="propertyForm-row">
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Tipo *</label>
               <select
+                className="propertyForm-select"
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                required
-                style={styles.select}
               >
                 <option>Apartamento</option>
                 <option>Casa</option>
@@ -400,361 +370,143 @@ const EditProperty = () => {
               </select>
             </div>
 
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Valor do Aluguel (R$) *</label>
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Preço (R$) *</label>
               <input
+                className="propertyForm-input"
                 type="number"
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
                 required
-                style={styles.input}
-                placeholder="2500"
               />
             </div>
           </div>
 
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Localização *</label>
+          <div className="propertyForm-formGroup">
+            <label className="propertyForm-label">Localização *</label>
             <input
-              type="text"
+              className="propertyForm-input"
               name="location"
               value={formData.location}
               onChange={handleChange}
               required
-              style={styles.input}
-              placeholder="Bairro, Cidade - Estado"
             />
           </div>
         </div>
 
-        {/* CARACTERÍSTICAS */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Características</h2>
+        {/* ---------------- CARACTERÍSTICAS ---------------- */}
+        <div className="propertyForm-section">
+          <h2 className="propertyForm-sectionTitle">Características</h2>
 
-          <div style={styles.row}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Quartos *</label>
+          <div className="propertyForm-row">
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Quartos *</label>
               <input
+                className="propertyForm-input"
                 type="number"
                 name="bedrooms"
                 value={formData.bedrooms}
                 onChange={handleChange}
                 required
-                min="0"
-                style={styles.input}
               />
             </div>
 
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Banheiros *</label>
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Banheiros *</label>
               <input
+                className="propertyForm-input"
                 type="number"
                 name="bathrooms"
                 value={formData.bathrooms}
                 onChange={handleChange}
                 required
-                min="0"
-                style={styles.input}
               />
             </div>
 
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Área (m²) *</label>
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Área (m²) *</label>
               <input
+                className="propertyForm-input"
                 type="number"
                 name="area"
                 value={formData.area}
                 onChange={handleChange}
                 required
-                min="0"
-                style={styles.input}
               />
             </div>
           </div>
 
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Comodidades</label>
+          <div className="propertyForm-formGroup">
+            <label className="propertyForm-label">Comodidades</label>
             <input
-              type="text"
+              className="propertyForm-input"
               name="amenities"
               value={formData.amenities}
               onChange={handleChange}
-              style={styles.input}
-              placeholder="Garagem, Elevador, Piscina (separados por vírgula)"
+              placeholder="Garagem, Piscina, etc."
             />
           </div>
         </div>
 
-        {/* CONTATO */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>Informações de Contato</h2>
+        {/* ---------------- CONTATO ---------------- */}
+        <div className="propertyForm-section">
+          <h2 className="propertyForm-sectionTitle">Contato</h2>
 
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nome *</label>
+          <div className="propertyForm-formGroup">
+            <label className="propertyForm-label">Nome *</label>
             <input
-              type="text"
+              className="propertyForm-input"
               name="contactName"
               value={formData.contactName}
               onChange={handleChange}
               required
-              style={styles.input}
             />
           </div>
 
-          <div style={styles.row}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Telefone *</label>
+          <div className="propertyForm-row">
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Telefone *</label>
               <input
-                type="tel"
+                className="propertyForm-input"
                 name="contactPhone"
                 value={formData.contactPhone}
                 onChange={handleChange}
                 required
-                style={styles.input}
-                placeholder="(11) 98765-4321"
               />
             </div>
 
-            <div style={styles.formGroup}>
-              <label style={styles.label}>E-mail *</label>
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">E-mail *</label>
               <input
-                type="email"
+                className="propertyForm-input"
                 name="contactEmail"
                 value={formData.contactEmail}
                 onChange={handleChange}
                 required
-                style={styles.input}
               />
             </div>
           </div>
         </div>
 
-        <div style={styles.buttonGroup}>
-          <button type="button" onClick={() => navigate('/dashboard')} style={styles.cancelButton}>
+        {/* ---------------- BOTÕES ---------------- */}
+        <div className="propertyForm-buttonGroup">
+          <button
+            type="button"
+            className="propertyForm-cancelButton"
+            onClick={() => navigate("/dashboard")}
+          >
             Cancelar
           </button>
-          <button type="submit" style={styles.submitButton}>
+
+          <button type="submit" className="propertyForm-submitButton">
             Salvar Alterações
           </button>
         </div>
+
       </form>
     </div>
   );
-};
-
-// Estilos
-const styles = {
-  container: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '20px'
-  },
-  loadingBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '400px'
-  },
-  loader: {
-    border: '4px solid #f3f3f3',
-    borderTop: '4px solid #3b82f6',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px',
-    animation: 'spin 1s linear infinite'
-  },
-  title: {
-    fontSize: '28px',
-    fontWeight: 'bold',
-    marginBottom: '20px',
-    color: '#1f2937'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '30px'
-  },
-  section: {
-    backgroundColor: '#fff',
-    padding: '24px',
-    borderRadius: '8px',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-  },
-  sectionTitle: {
-    fontSize: '20px',
-    fontWeight: '600',
-    marginBottom: '16px',
-    color: '#374151'
-  },
-  helperText: {
-    fontSize: '14px',
-    color: '#6b7280',
-    marginBottom: '16px'
-  },
-  previewGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-    gap: '12px',
-    marginBottom: '16px'
-  },
-  previewItem: {
-    position: 'relative',
-    aspectRatio: '1',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    border: '2px solid #e5e7eb'
-  },
-  previewImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover'
-  },
-  removeButton: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    backgroundColor: '#ef4444',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '50%',
-    width: '28px',
-    height: '28px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s'
-  },
-  imageBadge: {
-    position: 'absolute',
-    bottom: '8px',
-    left: '8px',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    color: '#fff',
-    padding: '4px 8px',
-    borderRadius: '4px',
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  emptyState: {
-    textAlign: 'center',
-    padding: '40px 20px',
-    backgroundColor: '#f9fafb',
-    borderRadius: '8px',
-    marginBottom: '16px'
-  },
-  emptyText: {
-    fontSize: '16px',
-    color: '#6b7280',
-    margin: '12px 0 4px'
-  },
-  emptySubtext: {
-    fontSize: '14px',
-    color: '#9ca3af'
-  },
-  uploadArea: {
-    marginTop: '16px'
-  },
-  uploadLabel: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    padding: '12px 24px',
-    backgroundColor: '#3b82f6',
-    color: '#fff',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    fontWeight: '500',
-    transition: 'background-color 0.2s'
-  },
-  uploadLabelDisabled: {
-    backgroundColor: '#9ca3af',
-    cursor: 'not-allowed'
-  },
-  progressBar: {
-    width: '100%',
-    height: '8px',
-    backgroundColor: '#e5e7eb',
-    borderRadius: '4px',
-    overflow: 'hidden',
-    marginTop: '16px'
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#3b82f6',
-    transition: 'width 0.3s'
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-  },
-  label: {
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#374151'
-  },
-  input: {
-    padding: '10px 12px',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    fontSize: '16px',
-    outline: 'none',
-    transition: 'border-color 0.2s'
-  },
-  textarea: {
-    padding: '10px 12px',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    fontSize: '16px',
-    outline: 'none',
-    resize: 'vertical',
-    fontFamily: 'inherit'
-  },
-  select: {
-    padding: '10px 12px',
-    border: '1px solid #d1d5db',
-    borderRadius: '6px',
-    fontSize: '16px',
-    outline: 'none',
-    backgroundColor: '#fff'
-  },
-  row: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '16px'
-  },
-  buttonGroup: {
-    display: 'flex',
-    gap: '12px',
-    justifyContent: 'flex-end',
-    marginTop: '20px'
-  },
-  cancelButton: {
-    padding: '12px 24px',
-    backgroundColor: '#6b7280',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s'
-  },
-  submitButton: {
-    padding: '12px 24px',
-    backgroundColor: '#10b981',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s'
-  }
 };
 
 export default EditProperty;

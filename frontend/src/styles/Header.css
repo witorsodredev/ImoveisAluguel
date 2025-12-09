@@ -1,0 +1,119 @@
+/* HEADER */
+.header {
+  background-color: #5973aa;
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LOGO */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: white;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* NAV */
+.header-nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.header-navLink {
+  color: white;
+  text-decoration: none;
+}
+
+/* BUTTONS */
+.header-iconButton {
+  background-color: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.header-panelButton {
+  background-color: #1e40af;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.header-userText {
+  color: #e5e7eb;
+}
+
+/* MODAL */
+.header-modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.header-modalBox {
+  width: 350px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.header-modalInput {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.header-modalButton {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.header-modalCancel {
+  width: 100%;
+  padding: 0.7rem;
+  background: #ddd;
+  border-radius: 6px;
+  border: none;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}

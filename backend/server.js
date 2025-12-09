@@ -162,7 +162,7 @@ app.get('/api/properties', (req, res) => {
  * 4. Salva no arquivo
  * 5. Retorna imóvel criado
  */
-app.post('/api/properties', verifyToken, (req, res) => {
+app.post('/api/properties', (req, res) => {
   try {
     /**
      * Valida dados obrigatórios
@@ -232,7 +232,7 @@ app.post('/api/properties', verifyToken, (req, res) => {
  * 
  * Remove imóvel e suas imagens
  */
-app.delete('/api/properties/:id', verifyToken, (req, res) => {
+app.delete('/api/properties/:id', (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -290,7 +290,7 @@ app.delete('/api/properties/:id', verifyToken, (req, res) => {
 });
 
 // Rotas de upload (mantém as anteriores)
-app.post('/api/upload', verifyToken, upload.array('images', 5), (req, res) => {
+app.post('/api/upload', upload.array('images', 5), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ 
       error: 'Nenhuma imagem foi enviada' 

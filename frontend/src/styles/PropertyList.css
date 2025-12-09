@@ -1,0 +1,89 @@
+.propertyList-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* FILTROS */
+.propertyList-filters {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* SEARCH BOX */
+.propertyList-searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.propertyList-searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+/* GRUPO DE FILTROS */
+.propertyList-filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.propertyList-select {
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* FILTRO DE PREÇO */
+.propertyList-priceFilter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 100px;
+}
+
+.propertyList-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.propertyList-slider {
+  width: 100%;
+}
+
+/* RESULTADOS */
+.propertyList-results {
+  margin-bottom: 1rem;
+}
+
+.propertyList-resultCount {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* GRID DE CARDS */
+.propertyList-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* SEM RESULTADOS */
+.propertyList-noResults {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}
