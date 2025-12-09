@@ -1,3 +1,22 @@
+# 🏠 ImoveisAluguel
+
+Aplicação destinada à **publicação e gerenciamento de imóveis**, voltada ao ramo imobiliário.  
+O projeto é dividido em dois módulos principais:
+
+- **Frontend** – Interface React para usuários.
+- **Backend** – API em Node.js para gerenciamento de dados e lógica de negócio.
+
+---
+
+## 🚀 Executando o projeto com Docker
+
+A aplicação utiliza Docker para simplificar o ambiente de desenvolvimento.
+
+### 📌 1. Entre nos diretórios do projeto
+
+Você pode executar o frontend e backend separadamente:
+
+```bash
 cd frontend
 
 ▶️ ## Executar em segundo plano (modo detached)
