@@ -1,26 +1,52 @@
 [
   {
     "id": 1,
-    "title": "Casa",
-    "description": "Teste",
+    "title": "teste 5",
+    "description": "teste",
     "price": 1500,
-    "location": "Centro",
+    "location": "centro",
     "bedrooms": 2,
-    "bathrooms": 2,
-    "area": 43,
-    "type": "Casa",
-    "images": [
-      "http://localhost:5000/uploads/1764948847275-187359413683712.jpg"
-    ],
+    "bathrooms": 1,
+    "area": 42,
+    "type": "Apartamento",
+    "images": [],
     "amenities": [
-      "Centro"
+      "Garagem"
     ],
     "contact": {
-      "name": "Casa teste",
-      "phone": "21966718763",
-      "email": "witor_sodre@lestetelecom.com.br"
+      "name": "witor",
+      "phone": "21966718739",
+      "email": "witor-cardoso@hotmail.com"
     },
     "available": true,
-    "createdAt": "2025-12-05T15:35:00.212Z"
+    "createdAt": "2025-12-05T21:07:10.415Z"
+  },
+  {
+    "id": 2,
+    "title": "Teste",
+    "description": "casa",
+    "price": 2500,
+    "location": "Centro",
+    "bedrooms": 2,
+    "bathrooms": 3,
+    "area": 42,
+    "type": "Casa",
+    "amenities": [
+      "Garagem"
+    ],
+    "contactName": "witor_sodre",
+    "contactPhone": "2196671876",
+    "contactEmail": "witor_sodre@hotmai.com",
+    "images": [
+      "http://localhost:5000/uploads/1765303358110-0_IbgJDuo_zjpinn49.webp",
+      "http://localhost:5000/uploads/1765305604883-Witor_Cardoso_Sodre_Analista_Suporte_Tecnico_ITIL4_Incidente_Capa.jpg"
+    ],
+    "contact": {
+      "name": "witor_sodre",
+      "phone": "2196671876",
+      "email": "witor_sodre@hotmai.com"
+    },
+    "available": true,
+    "createdAt": "2025-12-09T18:03:56.936Z"
   }
 ]

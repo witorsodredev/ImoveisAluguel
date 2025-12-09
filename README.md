@@ -66,4 +66,3 @@ JavaScript / JSX
 💬 Contato
 Criado por Witor Sodré
 📧 Email: witor_sodre@yahoo.com
-🌐 GitHub: https://github.com/witorsodredev

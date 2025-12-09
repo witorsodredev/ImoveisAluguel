@@ -1,78 +1,136 @@
-import React from 'react';
-import { Home, PlusCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Home, LogIn, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import "../styles/Header.css";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const Header = () => {
-  return (
-    <header style={styles.header}>
-      <div style={styles.container}>
-        <Link to="/" style={styles.logo}>
-          <Home size={32} />
-          <h1 style={styles.title}>ImóveisAluguel</h1>
-        </Link>
-        <nav style={styles.nav}>
-          <Link to="/" style={styles.navLink}>Início</Link>
-          <Link to="/publicar" style={styles.navButton}>
-            <PlusCircle size={20} />
-            Publicar Imóvel
-          </Link>
-        </nav>
-      </div>
-    </header>
-  );
-};
+  const navigate = useNavigate();
 
-const styles = {
-  header: {
-    backgroundColor: '#2563eb',
-    color: 'white',
-    padding: '1rem 0',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  container: {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 1rem',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  logo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    textDecoration: 'none',
-    color: 'white'
-  },
-  title: {
-    margin: 0,
-    fontSize: '1.5rem'
-  },
-  nav: {
-    display: 'flex',
-    gap: '1rem',
-    alignItems: 'center'
-  },
-  navLink: {
-    color: 'white',
-    textDecoration: 'none',
-    padding: '0.5rem 1rem',
-    borderRadius: '4px',
-    transition: 'background-color 0.3s'
-  },
-  navButton: {
-    backgroundColor: '#1e40af',
-    color: 'white',
-    textDecoration: 'none',
-    padding: '0.5rem 1rem',
-    borderRadius: '4px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s'
-  }
+  const [authUser, setAuthUser] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginForm, setLoginForm] = useState({ token: "" });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("authUser");
+    if (saved) setAuthUser(JSON.parse(saved));
+  }, []);
+
+  const handleLogin = async () => {
+    if (!loginForm.token) {
+      alert("Digite o token de acesso.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/api/token-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: loginForm.token })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Token inválido");
+        return;
+      }
+
+      localStorage.setItem("authUser", JSON.stringify(data));
+      setAuthUser(data);
+      setShowLogin(false);
+      navigate("/dashboard");
+
+    } catch (err) {
+      alert("Erro ao validar token");
+      console.error(err);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authUser");
+    setAuthUser(null);
+    navigate("/");
+  };
+
+  return (
+    <>
+      <header className="header">
+        <div className="header-container">
+
+          {/* LOGO */}
+          <Link to="/" className="header-logo">
+            <Home size={32} />
+            <h1 className="header-title">ImóveisAluguel</h1>
+          </Link>
+
+          <nav className="header-nav">
+            <Link to="/" className="header-navLink">Início</Link>
+
+            {/* SE LOGADO */}
+            {authUser ? (
+              <>
+                <span className="header-userText">Olá, administrador</span>
+
+                <button onClick={handleLogout} className="header-iconButton">
+                  <LogOut size={20} /> Sair
+                </button>
+
+                <button
+                  className="header-panelButton"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Gerenciar Imóveis
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setShowLogin(true)}
+                className="header-iconButton"
+              >
+                <LogIn size={20} /> Entrar
+              </button>
+            )}
+          </nav>
+
+        </div>
+      </header>
+
+      {/* MODAL LOGIN */}
+      {showLogin && (
+        <div className="header-modalOverlay">
+          <div className="header-modalBox">
+
+            <h2 style={{ marginBottom: "1rem" }}>Autenticação</h2>
+
+            <input
+              type="text"
+              name="token"
+              placeholder="Digite seu token"
+              className="header-modalInput"
+              value={loginForm.token}
+              onChange={(e) =>
+                setLoginForm(prev => ({ ...prev, token: e.target.value }))
+              }
+            />
+
+            <button onClick={handleLogin} className="header-modalButton">
+              Entrar
+            </button>
+
+            <button
+              onClick={() => setShowLogin(false)}
+              className="header-modalCancel"
+            >
+              Cancelar
+            </button>
+
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Header;
