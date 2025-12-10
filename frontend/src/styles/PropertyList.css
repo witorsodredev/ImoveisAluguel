@@ -1,27 +1,40 @@
+/* ==========================================
+   CONTAINER PRINCIPAL
+========================================== */
 .propertyList-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* FILTROS */
+/* ==========================================
+   FILTROS
+========================================== */
 .propertyList-filters {
-  background-color: white;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* SEARCH BOX */
+/* ==========================================
+   SEARCH BOX
+========================================== */
 .propertyList-searchBox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   margin-bottom: 1rem;
   padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+
+  border: 1px solid var(--card-border);
   border-radius: 4px;
+  background: var(--bg);
 }
 
 .propertyList-searchInput {
@@ -29,9 +42,13 @@
   border: none;
   outline: none;
   font-size: 1rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* GRUPO DE FILTROS */
+/* ==========================================
+   GRUPO DE FILTROS
+========================================== */
 .propertyList-filterGroup {
   display: flex;
   align-items: center;
@@ -41,49 +58,78 @@
 
 .propertyList-select {
   padding: 0.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--card-border);
   border-radius: 4px;
   font-size: 0.875rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* FILTRO DE PREÇO */
+/* ==========================================
+   FILTRO DE PREÇO
+========================================== */
 .propertyList-priceFilter {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   flex: 1;
-  min-width: 100px;
+  min-width: 150px;
 }
 
 .propertyList-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .propertyList-slider {
   width: 100%;
 }
 
-/* RESULTADOS */
+/* ==========================================
+   RESULTADOS
+========================================== */
 .propertyList-results {
   margin-bottom: 1rem;
 }
 
 .propertyList-resultCount {
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 
-/* GRID DE CARDS */
+/* ==========================================
+   GRID DE CARDS (FORMATO ORIGINAL)
+========================================== */
 .propertyList-grid {
+  background: var(--bg);
   display: grid;
+
+  /* Mantém DO JEITO QUE ESTAVA */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
   gap: 2rem;
 }
 
-/* SEM RESULTADOS */
+/* ==========================================
+   SEM RESULTADOS
+========================================== */
 .propertyList-noResults {
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: var(--text-muted);
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+@media (max-width: 700px) {
+  .propertyList-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .propertyList-grid {
+    grid-template-columns: 1fr;
+  }
 }

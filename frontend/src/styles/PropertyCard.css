@@ -1,5 +1,8 @@
+/* CARD */
 .property-card {
-  background-color: white;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -7,13 +10,12 @@
   cursor: pointer;
 }
 
-/* Hover */
 .property-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Image container */
+/* IMAGE */
 .property-card-image-container {
   position: relative;
   height: 200px;
@@ -26,83 +28,84 @@
   object-fit: cover;
 }
 
-/* Badge */
+/* BADGE */
 .property-card-badge {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
   font-size: 0.875rem;
   font-weight: bold;
 }
 
-/* Content */
+/* CONTENT */
 .property-card-content {
   padding: 1.5rem;
 }
 
-/* Title */
+/* TITLE */
 .property-card-title {
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
-  color: #1f2937;
+  color: var(--text);
 }
 
-/* Location */
+/* LOCATION */
 .property-card-location {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--text-muted, #888);
   font-size: 0.875rem;
   margin-bottom: 1rem;
 }
 
-/* Description */
+/* DESCRIPTION */
 .property-card-description {
-  color: #4b5563;
+  color: var(--text-muted, #aaa);
   font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 1rem;
 }
 
+/* FEATURES */
 .property-card-features {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--card-border);
 }
 
 .property-card-feature {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 
-/* Footer */
+/* FOOTER */
 .property-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* Price */
+/* PRICE */
 .property-card-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #2563eb;
+  color: var(--button-bg);
 }
 
-/* Button */
+/* BUTTON */
 .property-card-button {
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   text-decoration: none;
@@ -112,5 +115,20 @@
 }
 
 .property-card-button:hover {
-  background-color: #1e4ed8;
+  background-color: var(--button-bg-hover, #1e4ed8);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .property-card-image-container {
+    height: 140px;
+  }
+
+  .property-card-title {
+    font-size: 1.1rem;
+  }
+
+  .property-card-price {
+    font-size: 1.25rem;
+  }
 }

@@ -1,27 +1,36 @@
-/* HEADER */
+/* =======================================
+   HEADER – usa variáveis do tema
+   ======================================= */
+
 .header {
-  background-color: #5973aa;
-  color: white;
+  background: var(--card-bg);
+  color: var(--text);
   padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Container */
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* LOGO */
+/* =======================================
+   LOGO
+   ======================================= */
+
 .header-logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: white;
+  color: var(--text);
 }
 
 .header-title {
@@ -29,7 +38,10 @@
   font-size: 1.5rem;
 }
 
-/* NAV */
+/* =======================================
+   NAV
+   ======================================= */
+
 .header-nav {
   display: flex;
   gap: 1rem;
@@ -37,56 +49,86 @@
 }
 
 .header-navLink {
-  color: white;
+  color: var(--text);
   text-decoration: none;
+  font-weight: 500;
 }
 
-/* BUTTONS */
+.header-navLink:hover {
+  opacity: 0.7;
+}
+
+/* =======================================
+   BUTTONS
+   ======================================= */
+
 .header-iconButton {
-  background-color: transparent;
-  border: 1px solid rgba(255,255,255,0.4);
-  color: white;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text);
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
+
   display: flex;
   align-items: center;
   gap: 0.4rem;
+
   cursor: pointer;
+  transition: 0.2s;
 }
 
+.header-iconButton:hover {
+  background: var(--card-border);
+}
+
+/* painel admin */
 .header-panelButton {
-  background-color: #1e40af;
+  background: var(--button-bg);
   border: none;
   padding: 0.5rem 1rem;
-  color: white;
+  color: var(--button-text);
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
+.header-panelButton:hover {
+  background: var(--button-bg-hover, #1d4ed8);
+}
+
+/* texto do usuario */
 .header-userText {
-  color: #e5e7eb;
+  color: var(--text-muted, #9ca3af);
 }
 
-/* MODAL */
+/* =======================================
+   MODAL LOGIN
+   ======================================= */
+
 .header-modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+
   background: rgba(0,0,0,0.6);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   z-index: 1000;
 }
 
 .header-modalBox {
   width: 350px;
-  background: white;
+  background: var(--card-bg);
+  color: var(--text);
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid var(--card-border);
 }
 
 .header-modalInput {
@@ -94,26 +136,52 @@
   padding: 0.6rem;
   margin: 0.5rem 0;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--card-border);
+  background: var(--bg);
+  color: var(--text);
 }
 
 .header-modalButton {
   width: 100%;
   padding: 0.8rem;
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border-radius: 6px;
   border: none;
   margin-top: 0.5rem;
   cursor: pointer;
 }
 
+.header-modalButton:hover {
+  background: var(--button-bg-hover, #1d4ed8);
+}
+
 .header-modalCancel {
   width: 100%;
   padding: 0.7rem;
-  background: #ddd;
+  background: var(--card-border);
+  color: var(--text);
   border-radius: 6px;
   border: none;
   margin-top: 0.5rem;
   cursor: pointer;
+}
+
+.header-modalCancel:hover {
+  background: var(--card-border-hover, #b5b5b5);
+}
+
+/* =======================================
+   RESPONSIVIDADE
+   ======================================= */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

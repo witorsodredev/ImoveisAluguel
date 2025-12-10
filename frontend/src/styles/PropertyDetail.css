@@ -1,15 +1,18 @@
+/* CONTAINER PRINCIPAL */
 .property-detail-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* Botão Voltar */
+/* BOTÃO VOLTAR */
 .property-detail-back-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #2563eb;
+  color: var(--button-bg);
   text-decoration: none;
   margin-bottom: 1rem;
   font-size: 0.875rem;
@@ -22,91 +25,97 @@
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 2rem;
+  background: var(--card-bg);
 }
 
 .property-detail-main-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: white;
-  padding: 1.5rem;
+  background: var(--card-bg);
 }
 
-/* Botão Lateral */
+/* BOTÕES LATERAIS */
 .property-detail-gallery-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(255,255,255,0.9);
-  border: none;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 50%;
   width: 40px;
   height: 40px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
 }
 
-/* Indicador de imagem */
+/* INDICADOR DE IMAGEM */
 .property-detail-gallery-indicator {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0,0,0,0.6);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-size: 0.875rem;
 }
 
+/* CONTEÚDO */
 .property-detail-content {
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 2rem;
 }
 
-
+/* BOX PRINCIPAL */
 .propertydetail-main-info {
-  background-color: white;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Cabeçalho principal */
+/* CABEÇALHO DO IMÓVEL */
 .property-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+
+  border-bottom: 1px solid var(--card-border);
 }
 
 .property-detail-title {
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .property-detail-location {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--text-muted, #888);
 }
 
-/* Preço */
+/* PREÇO */
 .property-detail-price {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #2563eb;
+  color: var(--button-bg);
 }
 
 .property-detail-period {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* FEATURES */
@@ -114,27 +123,29 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+
+  border-bottom: 1px solid var(--card-border);
 }
 
 .property-detail-feature {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #2563eb;
+  color: var(--button-bg);
 }
 
 .property-detail-feature-value {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .property-detail-feature-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* SEÇÕES */
@@ -145,14 +156,15 @@
 .property-detail-section-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .property-detail-description {
-  color: #4b5563;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
+/* AMENIDADES */
 .property-detail-amenities {
   display: flex;
   flex-wrap: wrap;
@@ -160,19 +172,23 @@
 }
 
 .property--detail-amenity {
-  background-color: #eff6ff;
-  color: #2563eb;
+  background-color: var(--badge-bg, #dbeafe);
+  color: var(--button-bg);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-size: 0.875rem;
 }
 
-/* CONTATO */
+/* CARD DE CONTATO */
 .property-detail-contact-card {
-  background-color: white;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
   height: fit-content;
   position: sticky;
   top: 2rem;
@@ -181,7 +197,7 @@
 .property-detail-contact-title {
   font-size: 1.25rem;
   margin-bottom: 1rem;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .property-detail-contact-info {
@@ -193,29 +209,32 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .property-detail-contact-link {
-  color: #2563eb;
+  color: var(--button-bg);
   text-decoration: none;
 }
 
+/* BOTÃO DE CONTATO */
 .property-detail-contact-button {
   width: 100%;
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+
   padding: 1rem;
   border: none;
   border-radius: 4px;
+
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .property-detail-contact-button:hover {
-  background-color: #1e40af;
+  background-color: var(--button-bg-hover, #1e40af);
 }
 
 /* NOT FOUND */
@@ -223,5 +242,44 @@
   text-align: center;
   padding: 3rem;
   font-size: 1.5rem;
-  color: #6b7280;
+  color: var(--text-muted);
+}
+
+/* ===============================
+   RESPONSIVIDADE
+   =============================== */
+
+@media (max-width: 900px) {
+  .property-detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .property-detail-contact-card {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .property-detail-gallery {
+    height: 220px;
+  }
+
+  .property-detail-title {
+    font-size: 1.6rem;
+  }
+
+  .property-detail-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .property-detail-price {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .property-detail-features {
+    grid-template-columns: 1fr;
+  }
 }

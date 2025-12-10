@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Home, LogIn, LogOut } from 'lucide-react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Home, LogIn, LogOut, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/Header.css";
+
+
+import { ThemeContext } from "../context/themeContext.js";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -11,6 +14,9 @@ const Header = () => {
   const [authUser, setAuthUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [loginForm, setLoginForm] = useState({ token: "" });
+
+  // CONTEXTO DO TEMA
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     const saved = localStorage.getItem("authUser");
@@ -66,9 +72,15 @@ const Header = () => {
           </Link>
 
           <nav className="header-nav">
+
+            {/* BOTÃO DE TEMA */}
+            <button className="header-iconButton" onClick={toggleTheme}>
+              {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+              {theme === "light" ? "Escuro" : "Claro"}
+            </button>
+
             <Link to="/" className="header-navLink">Início</Link>
 
-            {/* SE LOGADO */}
             {authUser ? (
               <>
                 <span className="header-userText">Olá, administrador</span>
