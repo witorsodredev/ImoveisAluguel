@@ -1,14 +1,17 @@
+/* CONTAINER */
 .propertyForm-container {
   max-width: 850px;
   margin: 0 auto;
   padding: 20px;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .propertyForm-title {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .propertyForm-form {
@@ -19,21 +22,22 @@
 
 /* SEÇÕES */
 .propertyForm-section {
-  background: white;
+  background: var(--card-bg);
   padding: 24px;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .propertyForm-sectionTitle {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #1f2937;
+  color: var(--text);
 }
 
 .propertyForm-helperText {
-  color: #6b7280;
+  color: var(--text-muted, #888);
   font-size: 14px;
   margin-bottom: 16px;
 }
@@ -48,8 +52,8 @@
 .propertyForm-previewItem {
   position: relative;
   aspect-ratio: 1;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
+  background: var(--bg);
+  border: 2px solid var(--card-border);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -64,8 +68,8 @@
   position: absolute;
   top: 6px;
   right: 6px;
-  background: #ef4444;
-  color: white;
+  background: var(--danger-bg, #ef4444);
+  color: var(--button-text);
   border: none;
   border-radius: 50%;
   width: 28px;
@@ -87,24 +91,24 @@
   font-size: 12px;
 }
 
-/* EMPTY */
+/* EMPTY STATE */
 .propertyForm-emptyState {
   text-align: center;
   padding: 40px 20px;
-  background: #f9fafb;
-  border: 2px dashed #d1d5db;
+  background: var(--card-bg);
+  border: 2px dashed var(--card-border);
   border-radius: 8px;
 }
 
 .propertyForm-emptyText {
   margin-top: 12px;
   font-size: 16px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .propertyForm-emptySubtext {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-muted-light, #aaa);
 }
 
 /* UPLOAD */
@@ -117,16 +121,21 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: #2563eb;
-  color: white;
+  background: var(--button-bg);
+  color: var(--button-text);
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  transition: background 0.2s;
+}
+
+.propertyForm-uploadLabel:hover {
+  background: var(--button-bg-hover, #1d4ed8);
 }
 
 .propertyForm-uploadLabelDisabled {
-  background: #9ca3af !important;
+  background: var(--text-muted) !important;
   cursor: not-allowed !important;
   opacity: 0.6;
 }
@@ -134,7 +143,7 @@
 .propertyForm-progressBar {
   width: 100%;
   height: 8px;
-  background: #e5e7eb;
+  background: var(--card-border);
   border-radius: 4px;
   overflow: hidden;
   margin-top: 10px;
@@ -142,7 +151,7 @@
 
 .propertyForm-progressFill {
   height: 100%;
-  background: #2563eb;
+  background: var(--button-bg);
   transition: width 0.3s;
 }
 
@@ -155,7 +164,7 @@
 }
 
 .propertyForm-label {
-  color: #374151;
+  color: var(--text);
   font-size: 14px;
   font-weight: 500;
 }
@@ -164,11 +173,12 @@
 .propertyForm-textarea,
 .propertyForm-select {
   padding: 10px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--card-border);
   border-radius: 6px;
+  background: var(--bg);
   font-size: 15px;
+  color: var(--text);
   outline: none;
-  box-sizing: border-box;
 }
 
 .propertyForm-textarea {
@@ -189,16 +199,21 @@
 }
 
 .propertyForm-cancelButton {
-  background: #6b7280;
-  color: white;
+  background: var(--text-muted);
+  color: var(--button-text);
   padding: 10px 24px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.propertyForm-cancelButton:hover {
+  opacity: 0.8;
 }
 
 .propertyForm-submitButton {
-  background: #10b981;
+  background: var(--success-bg, #10b981);
   color: white;
   padding: 10px 24px;
   border-radius: 6px;
@@ -207,17 +222,22 @@
   cursor: pointer;
 }
 
+.propertyForm-submitButton:hover {
+  background: var(--success-bg-hover, #0e9a6c);
+}
+
 /* LOADING */
 .propertyForm-loadingBox {
   text-align: center;
   padding: 3rem;
+  color: var(--text);
 }
 
 .propertyForm-loader {
   width: 40px;
   height: 40px;
-  border: 5px solid #ddd;
-  border-top: 5px solid #2563eb;
+  border: 5px solid var(--card-border);
+  border-top: 5px solid var(--button-bg);
   border-radius: 50%;
   margin: auto;
   animation: spin 1s linear infinite;
@@ -225,4 +245,15 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .propertyForm-previewGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .propertyForm-title {
+    font-size: 22px;
+  }
 }

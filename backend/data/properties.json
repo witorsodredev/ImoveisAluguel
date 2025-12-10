@@ -9,7 +9,9 @@
     "bathrooms": 1,
     "area": 42,
     "type": "Apartamento",
-    "images": [],
+    "images": [
+      "http://localhost:5000/uploads/1765326066866-Witor_Cardoso_Sodre_Capa_Analista_Suporte_Tecnico_ITIL4_Incidente.jpg"
+    ],
     "amenities": [
       "Garagem"
     ],

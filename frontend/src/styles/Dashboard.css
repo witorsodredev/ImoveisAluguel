@@ -1,40 +1,57 @@
+/* CONTAINER PRINCIPAL */
 .dashboard-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
+/* TÍTULOS */
 .dashboard-title {
   font-size: 2rem;
   margin-bottom: 0.3rem;
+  color: var(--text);
 }
 
 .dashboard-subtitle {
-  color: #555;
+  color: var(--text-muted, #888);
   margin-bottom: 2rem;
 }
 
+/* GRID DE CARDS */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
+/* TEXTO QUANDO VAZIO */
 .empty {
   font-size: 1.2rem;
-  color: #777;
+  color: var(--text-muted, #777);
+  text-align: center;
 }
 
+/* CARD */
 .card {
-  background: white;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: 0.2s;
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* IMAGEM */
 .card-image {
   width: 100%;
   height: 160px;
@@ -42,23 +59,29 @@
   border-radius: 6px;
 }
 
+/* TÍTULO DO CARD */
 .cardTitle {
   margin: 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
+  color: var(--text);
 }
 
+/* INFOS */
 .cardInfo {
-  color: #666;
+  color: var(--text-muted, #666);
   font-size: 0.9rem;
 }
 
+/* PREÇO */
 .cardPrice {
   font-weight: bold;
   margin: 0.5rem 0;
+  color: var(--text);
 }
 
+/* BOTÕES */
 .buttonRow {
   display: flex;
   gap: 0.5rem;
@@ -67,6 +90,7 @@
   justify-content: center;
 }
 
+/* EDITAR */
 .editButton {
   background: #f59e0b;
   color: white;
@@ -74,8 +98,14 @@
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
+.editButton:hover {
+  background: #d97706;
+}
+
+/* DELETAR */
 .deleteButton {
   background: #dc2626;
   color: white;
@@ -86,11 +116,17 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  transition: 0.2s;
 }
 
+.deleteButton:hover {
+  background: #b91c1c;
+}
+
+/* ADICIONAR */
 .addButton {
-  background: #2563eb;
-  color: white;
+  background: var(--button-bg);
+  color: var(--button-text);
   border: none;
   padding: 0.7rem 1.3rem;
   border-radius: 8px;
@@ -99,18 +135,25 @@
   gap: 0.4rem;
   margin-bottom: 2rem;
   cursor: pointer;
+  transition: 0.2s;
 }
 
+.addButton:hover {
+  background: var(--button-bg-hover, #1d4ed8);
+}
+
+/* LOADING */
 .loadingBox {
   margin-top: 5rem;
   text-align: center;
+  color: var(--text);
 }
 
 .loader {
   width: 40px;
   height: 40px;
   border: 5px solid #ddd;
-  border-top: 5px solid #2563eb;
+  border-top: 5px solid var(--button-bg);
   border-radius: 50%;
   margin: auto;
   animation: spin 1s linear infinite;
@@ -118,4 +161,19 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+  .card-image {
+    height: 130px;
+  }
+
+  .dashboard-title {
+    font-size: 1.6rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }
