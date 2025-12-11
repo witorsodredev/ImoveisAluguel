@@ -17,6 +17,7 @@ const PropertyForm = ({ onSubmit }) => {
     bathrooms: '',
     area: '',
     type: 'Apartamento',
+    post: '',
     amenities: '',
     contactName: '',
     contactPhone: '',
@@ -102,6 +103,7 @@ const PropertyForm = ({ onSubmit }) => {
       bathrooms: parseInt(formData.bathrooms),
       area: parseFloat(formData.area),
       type: formData.type,
+      post: formData.post,
       images: uploadedImages,
       amenities: formData.amenities.split(',').map(a => a.trim()).filter(Boolean),
       contact: {
@@ -263,7 +265,20 @@ const PropertyForm = ({ onSubmit }) => {
                 <option>Cobertura</option>
               </select>
             </div>
-
+            
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Tipo de postagem</label>
+              <select
+                className="propertyForm-select"
+                name="post"
+                value={formData.post}
+                onChange={handleChange}
+              >
+                <option>Aluguel</option>
+                <option>Venda</option>
+              </select>
+            </div>
+            
             <div className="propertyForm-formGroup">
               <label className="propertyForm-label">Preço (R$) *</label>
               <input

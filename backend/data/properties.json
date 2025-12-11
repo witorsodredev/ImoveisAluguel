@@ -50,5 +50,63 @@
     },
     "available": true,
     "createdAt": "2025-12-09T18:03:56.936Z"
+  },
+  {
+    "id": 3,
+    "title": "Casa moderna com espaço e bom local",
+    "description": "Casa muito espaço e também com boa localização.",
+    "price": 2500,
+    "location": "Centro, Rio bonito, RJ",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "area": 42,
+    "type": "Studio",
+    "post": "Aluguel",
+    "amenities": [
+      "Garagem",
+      "Área de lazer"
+    ],
+    "contactName": "Witor Cardoso",
+    "contactPhone": "21966718763",
+    "contactEmail": "teste-sodre@hotmail.com",
+    "images": [
+      "http://localhost:5000/uploads/1765489933414-187359413683712.jpg"
+    ],
+    "contact": {
+      "name": "Witor Cardoso",
+      "phone": "21966718763",
+      "email": "teste-sodre@hotmail.com"
+    },
+    "available": true,
+    "createdAt": "2025-12-11T21:56:19.772Z"
+  },
+  {
+    "id": 4,
+    "title": "TESTE CAMPO ALUGUEL",
+    "description": "TESTE",
+    "price": 2500,
+    "location": "Centro, Rio bonito, RJ",
+    "bedrooms": 2,
+    "bathrooms": 3,
+    "area": 32,
+    "type": "Cobertura",
+    "post": "Venda",
+    "amenities": [
+      "Garagem",
+      "Área de lazer"
+    ],
+    "contactName": "Witor Cardoso",
+    "contactPhone": "21966718763",
+    "contactEmail": "teste-sodre@hotmail.com",
+    "images": [
+      "http://localhost:5000/uploads/1765491606427-187359413683712.jpg"
+    ],
+    "contact": {
+      "name": "Witor Cardoso",
+      "phone": "21966718763",
+      "email": "teste-sodre@hotmail.com"
+    },
+    "available": true,
+    "createdAt": "2025-12-11T22:20:47.635Z"
   }
 ]

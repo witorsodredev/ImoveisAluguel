@@ -21,6 +21,7 @@ const EditProperty = () => {
     bathrooms: '',
     area: '',
     type: 'Apartamento',
+    post: '',
     amenities: '',
     contactName: '',
     contactPhone: '',
@@ -77,6 +78,7 @@ const EditProperty = () => {
           bathrooms: property.bathrooms,
           area: property.area,
           type: property.type,
+          post: property.post,
           amenities: property.amenities.join(', '),
           contactName: property.contact?.name,
           contactPhone: property.contact?.phone,
@@ -183,6 +185,7 @@ const EditProperty = () => {
       bathrooms: parseInt(formData.bathrooms),
       area: parseFloat(formData.area),
       type: formData.type,
+      post: formData.post,
       images: uploadedImages,
       amenities: formData.amenities.split(',').map(a => a.trim()),
       contact: {
@@ -367,6 +370,18 @@ const EditProperty = () => {
                 <option>Studio</option>
                 <option>Kitnet</option>
                 <option>Cobertura</option>
+              </select>
+            </div>
+            <div className="propertyForm-formGroup">
+              <label className="propertyForm-label">Tipo de postagem</label>
+              <select
+                className="propertyForm-select"
+                name="post"
+                value={formData.post}
+                onChange={handleChange}
+              >
+                <option>Aluguel</option>
+                <option>Venda</option>
               </select>
             </div>
 

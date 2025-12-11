@@ -167,7 +167,7 @@ app.post('/api/properties', (req, res) => {
     /**
      * Valida dados obrigatórios
      */
-    const requiredFields = ['title', 'description', 'price', 'location', 'bedrooms', 'bathrooms', 'area', 'type', 'images', 'contact'];
+    const requiredFields = ['title', 'description', 'price', 'location', 'bedrooms', 'bathrooms', 'area', 'type', 'post', 'images', 'contact'];
 
     for (const field of requiredFields) {
       if (!req.body[field]) {

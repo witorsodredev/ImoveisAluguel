@@ -14,7 +14,7 @@ const PropertyCard = ({ property }) => {
           className="property-card-image"
         />
 
-        <div className="property-card--badge">
+        <div className="property-card-badge">
           {property.type}
         </div>
       </div>

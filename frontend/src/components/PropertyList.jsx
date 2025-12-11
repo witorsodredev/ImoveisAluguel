@@ -6,6 +6,7 @@ import "../styles/PropertyList.css";
 const PropertyList = ({ properties }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('Todos');
+  const [filterPost, setFilterPost] = useState('Todos');
   const [maxPrice, setMaxPrice] = useState(10000);
 
   const filteredProperties = properties.filter(property => {
@@ -18,7 +19,10 @@ const PropertyList = ({ properties }) => {
 
     const matchesPrice = property.price <= maxPrice;
 
-    return matchesSearch && matchesType && matchesPrice;
+    const matchesPost  = 
+      filterPost === 'Todos' || property.post === filterPost;
+
+    return matchesSearch && matchesType && matchesPost && matchesPrice;
   });
 
   return (
@@ -50,6 +54,16 @@ const PropertyList = ({ properties }) => {
             <option>Apartamento</option>
             <option>Casa</option>
             <option>Studio</option>
+          </select>
+
+          <select
+            value={filterType}
+            onChange={(e) => setFilterPost(e.target.value)}
+            className="propertyList-select"
+          >
+            <option>Todos</option>
+            <option>Aluguel</option>
+            <option>Venda</option>
           </select>
 
           <div className="propertyList-priceFilter">

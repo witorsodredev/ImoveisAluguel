@@ -73,21 +73,10 @@ const Header = () => {
 
           <nav className="header-nav">
 
-            {/* BOTÃO DE TEMA */}
-            <button className="header-iconButton" onClick={toggleTheme}>
-              {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-              {theme === "light" ? "Escuro" : "Claro"}
-            </button>
-
-            <Link to="/" className="header-navLink">Início</Link>
+            <Link to="/" className="header-iconButton">Início</Link>
 
             {authUser ? (
               <>
-                <span className="header-userText">Olá, administrador</span>
-
-                <button onClick={handleLogout} className="header-iconButton">
-                  <LogOut size={20} /> Sair
-                </button>
 
                 <button
                   className="header-panelButton"
@@ -95,6 +84,13 @@ const Header = () => {
                 >
                   Gerenciar Imóveis
                 </button>
+                {/* BOTÃO DE ACESSO A PAGINA ADMISTRATIVA */}
+                <span className="header-userText">Olá, administrador</span>
+                {/* BOTAÃO DE SAIR DO ACESSO ADMINISTRATOR */}
+                <button onClick={handleLogout} className="header-iconButton">
+                  <LogOut size={20} /> Sair
+                </button>
+
               </>
             ) : (
               <button
@@ -104,6 +100,11 @@ const Header = () => {
                 <LogIn size={20} /> Entrar
               </button>
             )}
+                {/* BOTÃO DE TEMA */}
+                <button className="header-iconButton" onClick={toggleTheme}>
+                  {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+                  {theme === "light" ? "Escuro" : "Claro"}
+                </button>
           </nav>
 
         </div>
