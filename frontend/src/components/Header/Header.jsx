@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Home, LogIn, LogOut, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import "../styles/Header.css";
+import "./Header.css";
 
 
-import { ThemeContext } from "../context/themeContext.js";
+import { ThemeContext } from "../../context/themeContext";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 

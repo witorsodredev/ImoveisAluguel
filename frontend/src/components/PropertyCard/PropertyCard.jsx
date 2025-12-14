@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Bed, Bath, Maximize } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import "../styles/PropertyCard.css";
+import "./PropertyCard.css";
 
 const PropertyCard = ({ property }) => {
   return (

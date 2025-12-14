@@ -6,7 +6,7 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-import "../styles/PropertyDetail.css";
+import "./PropertyDetail.css";
 
 const PropertyDetail = ({ properties }) => {
   const { id } = useParams();

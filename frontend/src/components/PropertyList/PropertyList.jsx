@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import PropertyCard from './PropertyCard';
+import PropertyCard from '../PropertyCard/PropertyCard';
 import { Search, Filter } from 'lucide-react';
-import "../styles/PropertyList.css";
+import "./PropertyList.css";
 
 const PropertyList = ({ properties }) => {
   const [searchTerm, setSearchTerm] = useState('');

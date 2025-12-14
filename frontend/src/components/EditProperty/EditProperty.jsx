@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon, Loader } from 'lucide-react';
-import "../styles/PropertyForm.css";
+import "../PropertyForm/PropertyForm.css";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 

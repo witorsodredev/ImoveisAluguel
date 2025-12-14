@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon, Loader } from 'lucide-react';
-import "../styles/PropertyForm.css";
+import "./PropertyForm.css";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -277,6 +277,24 @@ const PropertyForm = ({ onSubmit }) => {
                 <option>Aluguel</option>
                 <option>Venda</option>
               </select>
+
+            </div>
+
+              <div className="propertyForm-formGroup">
+                <label className="propertyForm-label">CEP</label>
+                  <input
+                  className="propertyForm-input"
+                  type="text"
+                  inputMode="numeric"
+                  name="cep"
+                  pattern="[0-9]{8}"
+                  maxLength="8"
+                  value={formData.cep}
+                  onChange={handleChange}
+                  placeholder="00000000"
+                  required
+                />
+
             </div>
             
             <div className="propertyForm-formGroup">
@@ -305,6 +323,7 @@ const PropertyForm = ({ onSubmit }) => {
               required
             />
           </div>
+
         </div>
 
         {/* ============================ CARACTERÍSTICAS ========================= */}

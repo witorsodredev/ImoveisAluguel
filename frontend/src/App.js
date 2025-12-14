@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Header from "./components/Header";
-import PropertyList from "./components/PropertyList";
-import PropertyDetail from "./components/PropertyDetail";
-import PropertyForm from "./components/PropertyForm";
-import Dashboard from "./components/Dashboard";
-import EditProperty from "./components/EditProperty";
+import Header from "./components/Header/Header";
+import PropertyList from "./components/PropertyList/PropertyList";
+import PropertyDetail from "./components/PropertyDetail/PropertyDetail";
+import PropertyForm from "./components/PropertyForm/PropertyForm";
+import Dashboard from "./components/Dashboard/Dashboard";
+import EditProperty from "./components/EditProperty/EditProperty";
 
 import "./App.css";
 
