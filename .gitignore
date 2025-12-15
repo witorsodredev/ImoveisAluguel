@@ -25,3 +25,5 @@ package-lock.json
 uploads
 README.md
 node_modules
+node_modules/
+properties.json*

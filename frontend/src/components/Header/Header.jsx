@@ -30,7 +30,7 @@ const Header = () => {
     }
 
     try {
-      const res = await fetch(`${API_URL}/api/token-login`, {
+      const res = await fetch(`${API_URL}/api/auth/token-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: loginForm.token })
