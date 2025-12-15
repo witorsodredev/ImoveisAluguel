@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Trash2, PlusCircle } from 'lucide-react';
 import "./Dashboard.css";
+
+
+
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -10,19 +13,26 @@ const Dashboard = () => {
   const [authUser, setAuthUser] = useState(null);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
+
+  // 🔐 Auth
   useEffect(() => {
     const saved = localStorage.getItem("authUser");
+
     if (!saved) {
       navigate("/");
       return;
     }
+
     setAuthUser(JSON.parse(saved));
   }, [navigate]);
 
+  // 🔄 Atualizar dados ao entrar na rota
   useEffect(() => {
     fetchProperties();
-  }, []);
+  }, [location.pathname]);
+
 
   const fetchProperties = async () => {
     try {
