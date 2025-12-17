@@ -2,18 +2,20 @@
   {
     "id": 1,
     "title": "teste 21",
-    "description": "teste",
+    "description": "teste cassa 24 hoje  é uma casa muito boa com quintal varanda e muita coisa boa para ver",
     "price": 1500,
-    "location": "centro",
+    "location": "Centro, Silva jardim, RJ",
     "bedrooms": 2,
     "bathrooms": 1,
     "area": 42,
     "type": "Apartamento",
     "images": [
-      "http://localhost:5000/uploads/1765326066866-Witor_Cardoso_Sodre_Capa_Analista_Suporte_Tecnico_ITIL4_Incidente.jpg"
+      "http://localhost:5000/uploads/1765941237903-187359413683712.jpg"
     ],
     "amenities": [
-      "Garagem"
+      "Garagem",
+      "Elevador",
+      "Área Social"
     ],
     "contact": {
       "name": "witor",
@@ -25,8 +27,8 @@
   },
   {
     "id": 3,
-    "title": "Casa moderna com espaço e bom local",
-    "description": "Casa muito espaço e também com boa localização.",
+    "title": "Casa moderna cheia de espaco para morar",
+    "description": "Casa muito espaço e também com boa localização.as dsadq1 qwdesad",
     "price": 2500,
     "location": "Centro, Rio bonito, RJ",
     "bedrooms": 2,

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
 import { Search, Filter } from 'lucide-react';
 import "./PropertyList.css";
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const PropertyList = ({ properties }) => {
+  usePageTitle("Inicio");
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('Todos');
   const [filterPost, setFilterPost] = useState('Todos');
@@ -57,8 +59,8 @@ const PropertyList = ({ properties }) => {
           </select>
 
           <select
-            value={filterType}
-            onChange={(e) => setFilterPost(e.target.value)}
+            value={filterPost}
+            onChange={(b) => setFilterPost(b.target.value)}
             className="propertyList-select"
           >
             <option>Todos</option>

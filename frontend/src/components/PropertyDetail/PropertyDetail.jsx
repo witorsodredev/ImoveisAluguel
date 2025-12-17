@@ -1,3 +1,5 @@
+import "./PropertyDetail.css";
+import { usePageTitle } from '../../hooks/usePageTitle';
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
@@ -6,9 +8,8 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-import "./PropertyDetail.css";
-
 const PropertyDetail = ({ properties }) => {
+  usePageTitle("Detalhes Post");
   const { id } = useParams();
   const property = properties.find(p => p.id === parseInt(id));
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

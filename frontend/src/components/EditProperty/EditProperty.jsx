@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon, Loader } from 'lucide-react';
 import "../PropertyForm/PropertyForm.css";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const EditProperty = () => {
+  usePageTitle("Edição de Posts");  
   const navigate = useNavigate();
   const { id } = useParams();
-
   const [loading, setLoading] = useState(true);
   const [accessToken, setAccessToken] = useState("");
-
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',

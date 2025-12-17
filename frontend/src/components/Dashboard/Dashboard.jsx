@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Trash2, PlusCircle } from 'lucide-react';
 import "./Dashboard.css";
 
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 
 
@@ -14,7 +15,8 @@ const Dashboard = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-
+  
+  usePageTitle("Dasboard");
 
   // 🔐 Auth
   useEffect(() => {
@@ -79,6 +81,7 @@ const Dashboard = () => {
   }
 
   return (
+    
     <div className="dashboard-container">
 
       <h1 className="dashboard-title">Painel de Gerenciamento</h1>

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import Header from "./components/Header/Header";
 import PropertyList from "./components/PropertyList/PropertyList";
 import PropertyDetail from "./components/PropertyDetail/PropertyDetail";
 import PropertyForm from "./components/PropertyForm/PropertyForm";
 import Dashboard from "./components/Dashboard/Dashboard";
 import EditProperty from "./components/EditProperty/EditProperty";
-
+import ProtectedRoute from "./components/routesafe/ProtectedRoute";
 import "./App.css";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // CARREGAMENTO DA PROPRIEDADE DA PAGINA
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -43,6 +43,7 @@ function App() {
   const handleAddProperty = (newProperty) => {
     setProperties((prev) => [...prev, newProperty]);
   };
+
 
   const handleDeleteProperty = async (id) => {
     if (
@@ -80,28 +81,10 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <main
-            style={{
-              minHeight: "calc(100vh - 200px)",
-              background: "var(--bg)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  border: "5px solid var(--card-border)",
-                  borderTop: "5px solid var(--button-bg)",
-                  borderRadius: "50%",
-                  animation: "spin 1s linear infinite",
-                  margin: "0 auto 1rem",
-                }}
-              />
-              <h2 style={{ color: "var(--text-muted)" }}>
+          <main className="loading">
+            <div className="loading-container">
+              <div className="loading-animation" />
+              <h2>
                 Carregando imóveis...
               </h2>
             </div>
@@ -119,66 +102,21 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <main
-            style={{
-              minHeight: "calc(100vh - 200px)",
-              background: "var(--bg)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                padding: "2rem",
-                background: "var(--card-bg)",
-                borderRadius: "8px",
-                border: "1px solid var(--card-border)",
-                maxWidth: "500px",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "48px",
-                  color: "var(--danger-bg, #ef4444)",
-                  marginBottom: "1rem",
-                }}
-              >
+          <main className="main-app-erro">
+            <div className="erro-container">
+
+              <div className="erro-emoji">
                 ⚠️
               </div>
-
-              <h2 style={{ color: "var(--text)", marginBottom: "1rem" }}>
+              <h2>
                 Erro ao carregar dados
               </h2>
-
-              <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem" }}>
-                {error}
-              </p>
-
-              <p
-                style={{
-                  color: "var(--text-muted-light)",
-                  fontSize: "0.875rem",
-                  marginBottom: "1.5rem",
-                }}
-              >
+              <p>{error}</p>
+              <p>
                 Verifique se o servidor backend está rodando em {API_URL}
               </p>
-
-              <button
-                onClick={fetchProperties}
-                style={{
-                  background: "var(--button-bg)",
-                  color: "var(--button-text)",
-                  padding: "0.75rem 1.5rem",
-                  border: "none",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                }}
-              >
+              <button className="erro-button-reload"
+                onClick={fetchProperties}>
                 Tentar Novamente
               </button>
             </div>
@@ -195,51 +133,19 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-
-        <main
-          style={{
-            minHeight: "calc(100vh - 200px)",
-            background: "var(--bg)",
-            color: "var(--text)",
-          }}
-        >
+        <main className="main-app">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <PropertyList
-                  properties={properties}
-                  onDelete={handleDeleteProperty}
-                />
-              }
-            />
-
-            <Route
-              path="/imovel/:id"
-              element={<PropertyDetail properties={properties} />}
-            />
-
-            <Route
-              path="/publicar"
-              element={<PropertyForm onSubmit={handleAddProperty} />}
-            />
-
-            <Route path="/dashboard" element={<Dashboard />} />
-
-            <Route path="/edit/:id" element={<EditProperty />} />
+            <Route path="/" element={<PropertyList properties={properties} onDelete={handleDeleteProperty} />} />
+            <Route path="/imovel/:id" element={<PropertyDetail properties={properties} />} />
+            {/* ROTAS PROTEGIDAS  */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/publicar" element={<PropertyForm onSubmit={handleAddProperty} />} />
+              <Route path="/edit/:id" element={<EditProperty />} />
+            </Route>
           </Routes>
         </main>
-
-        <footer
-          style={{
-            background: "var(--card-bg)",
-            color: "var(--text)",
-            textAlign: "center",
-            padding: "2rem",
-            marginTop: "3rem",
-            borderTop: "1px solid var(--card-border)",
-          }}
-        >
+        <footer className="footer-app">
           <p>© 2025 ImóveisAluguel. Todos os direitos reservados.</p>
         </footer>
       </div>

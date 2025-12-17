@@ -48,9 +48,11 @@
 
 /* TITLE */
 .property-card-title {
-  margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
-  color: var(--text);
+  line-height: 1.5;
+  height: calc(1.5em * 2);
+  overflow: hidden;
+
 }
 
 /* LOCATION */
@@ -69,6 +71,8 @@
   font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 1rem;
+  line-height: 1.4;
+  height: calc(1.4em * 2);
 }
 
 /* FEATURES */
