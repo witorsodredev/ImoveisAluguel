@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Upload, Image as ImageIcon, Loader } from 'lucide-react';
 import "./PropertyForm.css";
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 const PropertyForm = ({ onSubmit }) => {
+  usePageTitle("Cadastro");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

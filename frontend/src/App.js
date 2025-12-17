@@ -210,7 +210,9 @@ function App() {
                 <PropertyList
                   properties={properties}
                   onDelete={handleDeleteProperty}
+                  
                 />
+                
               }
             />
 
